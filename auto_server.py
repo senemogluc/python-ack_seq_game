@@ -1,4 +1,5 @@
 import socket
+import random
 
 def send_message(sock, seq, ack, length, addr = ('localhost', 12345)):
     message = f"{seq} {ack} {length}"
@@ -27,6 +28,8 @@ def main():
     seq = 0
     while True:
 
+        corrupted_rate = random.randint(1, 10)
+
         received_seq, received_ack, received_len, addr = receive_message(sock)
         if iteration == 0:
             ack = received_seq
@@ -36,7 +39,11 @@ def main():
         ack = received_seq + received_len
         seq = received_ack
         
-        send_message(sock, seq, ack, 10, addr)
+        if corrupted_rate % 3 == 0:
+            print("Packet corrupted!")
+            send_message(sock, seq-10, ack, 10, addr)
+        else:     
+            send_message(sock, seq, ack, 10, addr)
         iteration += 1
         print("Iteration: ", iteration)
 
