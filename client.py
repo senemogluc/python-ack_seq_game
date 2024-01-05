@@ -1,4 +1,5 @@
 import socket
+import pandas as pd
 
 def send_message(sock, seq, ack, length=10, addr = ('localhost', 12345)):
     message = f"{seq} {ack} {length}"
@@ -19,8 +20,16 @@ def receive_message(sock):
 def check_lost(received_seq, ack):
         return received_seq != ack  
 
+def append_data(seq, ack, length, dataframe):
+    data = [seq, ack, length]
+    dataframe.loc[len(dataframe)] = data
+    print(dataframe)
+    return dataframe
+
 def main():   
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    client_df = pd.DataFrame(columns=['seq', 'ack', 'length'])
     
     iteration = 0
     while True:
@@ -28,9 +37,10 @@ def main():
         seq, ack, length = list(map(int, input_string.split(' ')))
 
         send_message(sock, seq, ack, length)
+        append_data(seq, ack, 10, client_df)
         received_seq, received_ack, received_len, addr = receive_message(sock)
         if check_lost(received_seq, ack):
-            print("Packet lost!")
+            print("Packet lost!, please resend the packet")
         iteration += 1
         print("Iteration: ", iteration)
 
