@@ -50,7 +50,7 @@ def main():
         if iteration == 0:
             ack = received_seq
 
-        if check_lost(received_seq, ack): # Time out
+        if check_lost(received_seq, ack):
             print(f"Packet lost!")
 
         ack = received_seq + received_len
