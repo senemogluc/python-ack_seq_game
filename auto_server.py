@@ -58,8 +58,8 @@ def main():
         
         if corrupted_rate %  3 == 0:
             print("Sending corrupted packet...")
-            send_message(sock, seq+5, ack, 10, addr)
-            append_data(seq+5, ack, 10, server_df)
+            send_message(sock, seq+corrupted_rate, ack, 10, addr)
+            append_data(seq+corrupted_rate, ack, 10, server_df)
             continue
         
         send_message(sock, seq, ack, 10, addr)
