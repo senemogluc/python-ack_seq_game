@@ -27,12 +27,6 @@ def append_data(seq, ack, length, dataframe):
     print(dataframe)
     return dataframe
 
-def append_data(seq, ack, length, dataframe):
-    data = [seq, ack, length]
-    dataframe.loc[len(dataframe)] = data
-    print(dataframe)
-    return dataframe
-
 def main():   
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(('localhost', 12345))
