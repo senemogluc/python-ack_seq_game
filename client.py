@@ -33,16 +33,24 @@ def main():
     
     iteration = 0
     while True:
+        print("Iteration: ", iteration)
+
         input_string = input("Enter the SEQ, ACK, and length values: ")
         seq, ack, length = list(map(int, input_string.split(' ')))
 
         send_message(sock, seq, ack, length)
-        append_data(seq, ack, 10, client_df)
+        append_data(seq, ack, length, client_df)
+
+        if iteration != 0 and seq != received_ack and not corrupted:
+            ack = received_seq
+
+        corrupted = False
         received_seq, received_ack, received_len, addr = receive_message(sock)
         if check_lost(received_seq, ack):
-            print("Packet lost!, please resend the packet")
+            print("Recieved wrong packet sequence! Please resend the packet")
+            corrupted = True
         iteration += 1
-        print("Iteration: ", iteration)
+        
 
 if __name__ == "__main__":
     main()

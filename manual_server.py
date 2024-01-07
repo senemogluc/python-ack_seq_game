@@ -14,7 +14,6 @@ def receive_message(sock):
     received_seq = int(received_seq)
     received_ack = int(received_ack)
     received_len = int(received_len)
-    #TODO: mesaj gelmedi kontrol et
 
     return received_seq, received_ack, received_len, addr
 
@@ -37,16 +36,21 @@ def main():
     while True:
         print("Iteration: ", iteration)
 
+        if iteration != 0 and seq != received_ack and not corrupted:
+            ack = received_seq
+
+        corrupted = False
         received_seq, received_ack, received_len, addr = receive_message(sock)
         if iteration != 0 and check_lost(received_seq, ack):
-            print(f"Packet lost!")
-            
+            print("Recieved wrong packet sequence! Please resend the packet")
+            corrupted = True
+
         input_string = input("Enter the SEQ, ACK, and length values: ")
         seq, ack, length = list(map(int, input_string.split(' ')))
 
         send_message(sock, seq, ack, length, addr)
         append_data(seq, ack, length, server_df)
-
+        
         iteration += 1
         
 if __name__ == "__main__":

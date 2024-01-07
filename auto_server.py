@@ -37,7 +37,7 @@ def main():
     seq = 0
     while True:
         print("Iteration: ", iteration)
-        corrupted_rate = random.randint(1, 10)
+        corrupted_rate = random.randint(1, 11)
 
         received_seq, received_ack, received_len, addr = receive_message(sock)
         if iteration == 0:
@@ -45,19 +45,25 @@ def main():
 
         if check_lost(received_seq, ack):
             print(f"Packet lost!")
-
+        
         ack = received_seq + received_len
         seq = received_ack
         
-        if corrupted_rate %  3 == 0:
-            print("Sending corrupted packet...")
-            send_message(sock, seq+corrupted_rate, ack, 10, addr)
-            append_data(seq+corrupted_rate, ack, 10, server_df)
+        if corrupted_rate % 3 == 0:
+            print("Sending corrupted packet...", corrupted_rate)
+
+            send_message(sock, seq+corrupted_rate, ack, corrupted_rate*10, addr)
+            append_data(seq+corrupted_rate, ack, corrupted_rate*10, server_df)
+
             iteration += 1
-            continue
-        
-        send_message(sock, seq, ack, 10, addr)
-        append_data(seq, ack, 10, server_df)
+            print("Iteration: ", iteration)
+
+            received_seq, received_ack, received_len, addr = receive_message(sock)
+            ack = received_seq + received_len
+            seq = received_ack
+
+        send_message(sock, seq, ack, corrupted_rate*10, addr)
+        append_data(seq, ack, corrupted_rate*10, server_df)
         iteration += 1
 
 if __name__ == "__main__":
