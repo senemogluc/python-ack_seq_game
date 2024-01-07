@@ -51,6 +51,5 @@ def main():
             corrupted = True
         iteration += 1
         
-
 if __name__ == "__main__":
     main()
