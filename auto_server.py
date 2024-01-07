@@ -1,7 +1,6 @@
 import socket
 import random
 import pandas as pd
-import pandas as pd
 
 def send_message(sock, seq, ack, length, addr = ('localhost', 12345)):
     message = f"{seq} {ack} {length}"
