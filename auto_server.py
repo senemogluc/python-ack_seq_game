@@ -60,6 +60,7 @@ def main():
             print("Sending corrupted packet...")
             send_message(sock, seq+corrupted_rate, ack, 10, addr)
             append_data(seq+corrupted_rate, ack, 10, server_df)
+            iteration += 1
             continue
         
         send_message(sock, seq, ack, 10, addr)
