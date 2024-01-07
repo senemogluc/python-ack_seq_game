@@ -40,8 +40,6 @@ def main():
 
     server_df = pd.DataFrame(columns=['seq', 'ack', 'length'])
 
-    server_df = pd.DataFrame(columns=['seq', 'ack', 'length'])
-
     iteration = 0
     seq = 0
     while True:
