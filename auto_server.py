@@ -46,7 +46,6 @@ def main():
     seq = 0
     while True:
         print("Iteration: ", iteration)
-        print("Iteration: ", iteration)
         corrupted_rate = random.randint(1, 10)
 
         received_seq, received_ack, received_len, addr = receive_message(sock)
